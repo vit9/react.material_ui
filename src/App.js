@@ -1,11 +1,17 @@
 import React from 'react';
-import SignIn from './pages/signIn';
+import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
+import Router from './router';
+import store from './store';
 
 function App() {
   return (
-    <div className="App">
-      <SignIn/>
-    </div>
+    <BrowserRouter>
+      <Provider store={store}>
+        <Router/>
+      </Provider>
+    </BrowserRouter>
+
   );
 }
 

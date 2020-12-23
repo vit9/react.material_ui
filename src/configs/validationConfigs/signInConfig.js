@@ -1,4 +1,4 @@
-export default {
+export const signInConfig = {
   email: {
     id: 0,
     title: 'email',
@@ -8,6 +8,7 @@ export default {
     regexp: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
     errors: {
       maxLegnth: 'Email should be less than 50 symbols',
+      regexp: 'Email is incorrect',
       value: 'This field can not be empty',
     },
   },

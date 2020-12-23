@@ -1,5 +1,4 @@
 import React from 'react';
-import useValidation from 'react-custom-hook-validation';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -9,9 +8,10 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import useValidation from '../utils/validation';
 
 import Input from '../components/TextField';
-import validationConfig from '../configs/validationConfigs/signInConfig';
+import { signInConfig } from '../configs/validationConfigs';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignIn() {
   const classes = useStyles();
-  const [email, password, fieldValues, changeHandler, startValidation] = useValidation(validationConfig);
+  const [email, password, fieldValues, changeHandler, startValidation] = useValidation(signInConfig);
 
   const signIn = (config, error) => {
     console.log(config, error);
@@ -61,11 +61,11 @@ export default function SignIn() {
                     error={!!email.errors}
                     errorText={email.errors}
                     value={fieldValues.email.value || ''}
-                    onChange={changeHandler}
+                    changeHandler={changeHandler}
                 />
             </Grid>
-           <Grid item className={classes.fieldItem}>
-           <Input
+            <Grid item className={classes.fieldItem}>
+              <Input
                   type='adornments'
                   variant="outlined"
                   required={true}
@@ -74,10 +74,9 @@ export default function SignIn() {
                   error={!!password.errors}
                   errorText={password.errors}
                   value={fieldValues.password.value || ''}
-                  onChange={changeHandler}
+                  changeHandler={changeHandler}
               />
-           </Grid>
-
+            </Grid>
           </Grid>
           <Button
             fullWidth

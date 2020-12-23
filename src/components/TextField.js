@@ -5,11 +5,10 @@ import {
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
-export default function TInput({
+export default function Input({
   type, value, label, variant, required, name, multiline, rows, error, errorText, changeHandler,
 }) {
   const [showIcon, setShowIcon] = useState(false);
-
   const handleClickShowIcon = () => {
     setShowIcon(!showIcon);
   };
@@ -23,12 +22,13 @@ export default function TInput({
     {
         type === 'adornments'
           ? <FormControl variant={variant} required={required} fullWidth>
-                <InputLabel>{label}</InputLabel>
+                <InputLabel error={error}>{label}</InputLabel>
                 <OutlinedInput
                     type={showIcon ? 'text' : 'password'}
-                //   value={values.password}
-                    onChange={changeHandler}
+                    value={value}
+                    onChange={(event) => changeHandler(event)}
                     name={name}
+                    error={error}
                     endAdornment={
                         <InputAdornment position="end">
                         <IconButton
@@ -43,7 +43,7 @@ export default function TInput({
                     }
                     labelWidth={70}
                 />
-                <FormHelperText>{errorText}</FormHelperText>
+                <FormHelperText error={error}>{errorText}</FormHelperText>
             </FormControl>
           : <TextField
                 fullWidth
@@ -56,7 +56,7 @@ export default function TInput({
                 rows={rows}
                 error={error}
                 helperText={errorText}
-                onChange={changeHandler}
+                onChange={(event) => changeHandler(event)}
             />
         }
     </>

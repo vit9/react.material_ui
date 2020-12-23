@@ -1,1 +1,1 @@
-// export default from './signInConfig';
+export * from './signInConfig';
