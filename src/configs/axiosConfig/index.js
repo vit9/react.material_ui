@@ -25,10 +25,9 @@ const processQueue = (error, token = null) => {
 
 const config = {
   setConfiguration() {
-    console.log(this);
-    // this.default();
-    // this._interceptorsRequest();
-    // this._interceptorsResponse();
+    this.default();
+    this._interceptorsRequest();
+    this._interceptorsResponse();
   },
   default() {
     axios.defaults.baseURL = 'http://localhost:8081/api';
@@ -52,7 +51,6 @@ const config = {
     localStorage.removeItem('refreshToken');
   },
   _interceptorsRequest() {
-    console.log(this);
     axios.interceptors.request.use(
       (config) => {
         const token = this.getAccessToken();
@@ -109,4 +107,4 @@ const config = {
   },
 };
 
-export default config.setConfiguration;
+export default config;

@@ -5,7 +5,7 @@ import {
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
-export default function Input({
+export default function CInput({
   type, value, label, variant, required, name, multiline, rows, error, errorText, changeHandler,
 }) {
   const [showIcon, setShowIcon] = useState(false);
@@ -26,7 +26,7 @@ export default function Input({
                 <OutlinedInput
                     type={showIcon ? 'text' : 'password'}
                     value={value}
-                    onChange={(event) => changeHandler(event)}
+                    onChange={changeHandler}
                     name={name}
                     error={error}
                     endAdornment={
@@ -56,7 +56,7 @@ export default function Input({
                 rows={rows}
                 error={error}
                 helperText={errorText}
-                onChange={(event) => changeHandler(event)}
+                onChange={changeHandler}
             />
         }
     </>

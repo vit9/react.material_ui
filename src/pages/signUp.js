@@ -1,6 +1,7 @@
 import React from 'react';
-import { Link, useParams, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
@@ -11,8 +12,7 @@ import useValidation from '../utils/validation';
 
 import CInput from '../components/TextField';
 import CButton from '../components/Button';
-import { languages } from '../languages';
-import { signInConfig } from '../configs/validationConfigs';
+import { signUpConfig } from '../configs/validationConfigs';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -35,11 +35,9 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignIn() {
   const classes = useStyles();
-  const params = useParams();
+  const [email, password, confirmPassword, fieldValues, changeHandler, startValidation] = useValidation(signUpConfig);
 
-  const [email, password, fieldValues, changeHandler, startValidation] = useValidation(signInConfig);
-
-  const signIn = (config, error) => {
+  const signUp = (config, error) => {
     console.log(config, error);
   };
 
@@ -51,7 +49,7 @@ export default function SignIn() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Sign up
           </Typography>
           <Grid container spacing={2}>
             <Grid item className={classes.fieldItem}>
@@ -68,7 +66,7 @@ export default function SignIn() {
                 />
             </Grid>
             <Grid item className={classes.fieldItem}>
-              <CInput
+                <CInput
                   type='adornments'
                   variant="outlined"
                   required={true}
@@ -81,18 +79,31 @@ export default function SignIn() {
               />
             </Grid>
             <Grid item className={classes.fieldItem}>
+                <CInput
+                    type='adornments'
+                    variant="outlined"
+                    required={true}
+                    label='confirm password'
+                    name='confirmPassword'
+                    error={!!confirmPassword.errors}
+                    errorText={confirmPassword.errors}
+                    value={fieldValues.confirmPassword.value || ''}
+                    changeHandler={changeHandler}
+                />
+            </Grid>
+            <Grid item className={classes.fieldItem}>
               <CButton
                 variant="contained"
                 color="primary"
-                submit={() => startValidation(signIn)}
-                title='Sign in'
+                submit={() => startValidation(signUp)}
+                title='Sign up'
               />
             </Grid>
             <Grid item>
-              <Link to='/sign-up'>
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
+                <Link to='/sign-in'>
+                  {'Already have an account? Sign in'}
+                </Link>
+              </Grid>
           </Grid>
         </div>
       </Container>
