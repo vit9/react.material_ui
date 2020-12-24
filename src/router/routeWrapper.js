@@ -6,7 +6,7 @@ import AppBar from '../components/AppBar';
 import { checkRoles } from '../configs/routerConfig';
 
 export default function RouteWrapper({
-  Component, roles, isPrivate, token, renderWithoutVerify, language, ...rest
+  Component, roles, isPrivate, token, renderWithoutVerify, setLanguage, ...rest
 }) {
   return (
             <Route
@@ -16,7 +16,7 @@ export default function RouteWrapper({
                     if (token) {
                       if (checkRoles(roles, ['superadmin'], false).includes(true)) {
                         return (
-                          <AppBar language={language}>
+                          <AppBar v={setLanguage}>
                             <Component {...props}/>
                           </AppBar>
                         );
@@ -25,7 +25,7 @@ export default function RouteWrapper({
                     }
                     return <Redirect to='/sign-in'/>;
                   }
-                  return !token || renderWithoutVerify ? <AppBar language={language}><Component {...props}/> </AppBar> : <Redirect to='/'/>;
+                  return !token || renderWithoutVerify ? <AppBar setLanguage={setLanguage}><Component {...props}/> </AppBar> : <Redirect to='/'/>;
                 }}
             />
   );

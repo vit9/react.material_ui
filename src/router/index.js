@@ -1,12 +1,15 @@
 import React, { Fragment, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Switch, Route, useLocation } from 'react-router-dom';
 import { routerConfig } from '../configs/routerConfig';
 import RouteWrapper from './routeWrapper';
 import Axios from '../configs/axiosConfig';
+import { languageAction } from '../store/actions';
 import { supportedLanguages } from '../languages';
 
 export default function Router() {
   const location = useLocation();
+  const dispatch = useDispatch();
   const lang = location.pathname.split('/')[1];
   const [language, setLanguage] = useState(null);
   const [config, setConfig] = useState(() => (lang === '' ? routerConfig : supportedLanguages.includes(lang) ? routerConfig.map((el) => ({ ...el, path: `/${lang}${el.path}` })) : routerConfig));
@@ -16,7 +19,10 @@ export default function Router() {
 
   useEffect(() => {
     const lang = location.pathname.split('/')[1];
-    if (language !== null) setConfig((prevcofig) => prevcofig.map((c) => ({ ...c, path: `${language}/${c.path.substring(lang.length === 2 ? 1 : 4)}` })));
+    if (language !== null) {
+      setConfig((prevcofig) => prevcofig.map((c) => ({ ...c, path: `${language}/${c.path.substring(lang.length === 2 ? 1 : 4)}` })));
+    }
+    dispatch(languageAction(language || lang.length === 2 ? lang : 'en'));
   }, [language]);
 
   return (
@@ -36,7 +42,7 @@ export default function Router() {
                     key={id}
                     token={localStorage.accessToken}
                     renderWithoutVerify={renderWithoutVerify}
-                    language={{ language, setLanguage }}
+                    setLanguage={setLanguage}
                   />)
             }
             <Route component = {() => <div>404</div>} />

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -58,18 +58,21 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function PrimarySearchAppBar(props) {
-  const { language: { language, setLanguage } } = props;
+  const { setLanguage } = props;
   const classes = useStyles();
   const history = useHistory();
   const location = useLocation();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const langIndex = location.pathname.split('/')[1];
+  const lang = langIndex.length === 2 ? langIndex : '';
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const chooseLanguage = (lang) => {
-    const langIndex = location.pathname.split('/')[1];
+    // const langIndex = location.pathname.split('/')[1];
     history.push(`${lang}/${location.pathname.substring(langIndex.length === 2 ? 4 : 1)}`);
     setLanguage(lang);
     setAnchorEl(null);
@@ -161,7 +164,7 @@ export default function PrimarySearchAppBar(props) {
               <GTranslate />
             </IconButton>
             <Typography className={classes.language} variant="h6" noWrap>
-                  sad
+                  {languagesList.find((el) => el.routeName === (lang === '' ? lang : `/${lang}`)).name}
             </Typography>
           </div>
           <div className={classes.sectionMobile}>

@@ -1,0 +1,1 @@
+export const SET_LANGAUGE = '[SYSTEM] SET LANGUAGE';

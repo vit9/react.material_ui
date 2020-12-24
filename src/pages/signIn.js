@@ -1,5 +1,6 @@
 import React from 'react';
-import { Link, useParams, useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { Link, useLocation } from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
@@ -35,8 +36,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignIn() {
   const classes = useStyles();
-  const params = useParams();
 
+  const language = useSelector(({ systemReducer }) => systemReducer.language);
   const [email, password, fieldValues, changeHandler, startValidation] = useValidation(signInConfig);
 
   const signIn = (config, error) => {
@@ -51,7 +52,7 @@ export default function SignIn() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+           {languages[language]['sign-in'].title}
           </Typography>
           <Grid container spacing={2}>
             <Grid item className={classes.fieldItem}>
@@ -59,7 +60,7 @@ export default function SignIn() {
                     type='email'
                     variant="outlined"
                     required={true}
-                    label='email'
+                    label={languages[language]['sign-in'].email}
                     name='email'
                     error={!!email.errors}
                     errorText={email.errors}
@@ -72,7 +73,7 @@ export default function SignIn() {
                   type='adornments'
                   variant="outlined"
                   required={true}
-                  label='password'
+                  label={languages[language]['sign-in'].password}
                   name='password'
                   error={!!password.errors}
                   errorText={password.errors}
@@ -85,12 +86,12 @@ export default function SignIn() {
                 variant="contained"
                 color="primary"
                 submit={() => startValidation(signIn)}
-                title='Sign in'
+                title={languages[language]['sign-in'].buttonTitle}
               />
             </Grid>
             <Grid item>
-              <Link to='/sign-up'>
-                {"Don't have an account? Sign Up"}
+              <Link to={`${languages[language].links}/sign-up`}>
+                {languages[language]['sign-in'].linkTitle}
               </Link>
             </Grid>
           </Grid>
