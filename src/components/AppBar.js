@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -10,60 +9,17 @@ import Menu from '@material-ui/core/Menu';
 import MenuIcon from '@material-ui/icons/Menu';
 import GTranslate from '@material-ui/icons/GTranslate';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import { appBarStyles } from './styles';
 
-import { languagesList } from '../languages';
+import { languagesList, supportedLanguages } from '../languages';
 
-const useStyles = makeStyles((theme) => ({
-  grow: {
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  title: {
-    display: 'none',
-    [theme.breakpoints.up('sm')]: {
-      display: 'block',
-    },
-  },
-  language: {
-    alignSelf: 'center',
-    paddingLeft: '0.5em',
-  },
-  inputRoot: {
-    color: 'inherit',
-  },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '20ch',
-    },
-  },
-  sectionDesktop: {
-    display: 'none',
-    [theme.breakpoints.up('md')]: {
-      display: 'flex',
-    },
-  },
-  sectionMobile: {
-    display: 'flex',
-    [theme.breakpoints.up('md')]: {
-      display: 'none',
-    },
-  },
-}));
+const useStyles = appBarStyles();
 
 export default function PrimarySearchAppBar(props) {
   const { setLanguage } = props;
   const classes = useStyles();
   const history = useHistory();
   const location = useLocation();
-  const langIndex = location.pathname.split('/')[1];
-  const lang = langIndex.length === 2 ? langIndex : '';
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
@@ -72,11 +28,18 @@ export default function PrimarySearchAppBar(props) {
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const chooseLanguage = (lang) => {
-    // const langIndex = location.pathname.split('/')[1];
-    history.push(`${lang}/${location.pathname.substring(langIndex.length === 2 ? 4 : 1)}`);
-    setLanguage(lang);
-    setAnchorEl(null);
-    handleMobileMenuClose();
+    let pathName = location.pathname;
+    if (supportedLanguages.includes(location.pathname.substr(1, 2))) pathName = location.pathname.slice(3);
+    if (location.pathname.substr(0, 3) === lang) return;
+    if (!lang) {
+      if (!supportedLanguages.includes(location.pathname.substr(1, 2))) return;
+      pathName = location.pathname.substr(3);
+    }
+    history.push(`${lang}${pathName}`);
+    setLanguage((config) => config.map((c) => {
+      if (!lang || supportedLanguages.includes(location.pathname.substr(1, 2))) return ({ ...c, path: `${lang}${c.path.slice(3)}` });
+      return ({ ...c, path: `${lang}${c.path}` });
+    }));
   };
 
   const handleProfileMenuOpen = (event) => {
@@ -96,18 +59,17 @@ export default function PrimarySearchAppBar(props) {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
-  const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      id={menuId}
+      id='primary-search-account-menu'
       keepMounted
       transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-        {languagesList.map(({ name, routeName }, key) => <MenuItem key={key} onClick={() => chooseLanguage(routeName)}>{name}</MenuItem>)}
+        {languagesList.map(({ name, language }, key) => <MenuItem key={key} onClick={() => chooseLanguage(language)}>{name}</MenuItem>)}
     </Menu>
   );
 
@@ -156,7 +118,7 @@ export default function PrimarySearchAppBar(props) {
             <IconButton
               edge="end"
               aria-label="account of current user"
-              aria-controls={menuId}
+              aria-controls='primary-search-account-menu'
               aria-haspopup="true"
               onClick={handleProfileMenuOpen}
               color="inherit"
@@ -164,7 +126,7 @@ export default function PrimarySearchAppBar(props) {
               <GTranslate />
             </IconButton>
             <Typography className={classes.language} variant="h6" noWrap>
-                  {languagesList.find((el) => el.routeName === (lang === '' ? lang : `/${lang}`)).name}
+                  {/* {languagesList.find((el) => el.routeName === (lang === '' ? lang : `/${lang}`)).name} */}
             </Typography>
           </div>
           <div className={classes.sectionMobile}>

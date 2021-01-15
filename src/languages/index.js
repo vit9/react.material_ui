@@ -2,12 +2,12 @@ export const languagesList = [
   {
     id: 1,
     name: 'Русский',
-    routeName: '/ru',
+    language: '/ru',
   },
   {
     id: 2,
     name: 'English',
-    routeName: '',
+    language: '',
   },
 ];
 export const supportedLanguages = [
@@ -15,7 +15,7 @@ export const supportedLanguages = [
 ];
 export const languages = {
   ru: {
-    links: '/ru',
+    link: '/ru',
     'sign-in': {
       title: 'Вход',
       email: 'e-mail',
@@ -33,7 +33,7 @@ export const languages = {
     },
   },
   en: {
-    links: '',
+    link: '',
     'sign-in': {
       title: 'Sign in',
       email: 'email',

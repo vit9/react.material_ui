@@ -16,7 +16,7 @@ export default function RouteWrapper({
                     if (token) {
                       if (checkRoles(roles, ['superadmin'], false).includes(true)) {
                         return (
-                          <AppBar v={setLanguage}>
+                          <AppBar setLanguage={setLanguage}>
                             <Component {...props}/>
                           </AppBar>
                         );

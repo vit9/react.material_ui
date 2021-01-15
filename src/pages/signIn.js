@@ -1,12 +1,11 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import useValidation from '../utils/validation';
 
@@ -14,31 +13,15 @@ import CInput from '../components/TextField';
 import CButton from '../components/Button';
 import { languages } from '../languages';
 import { signInConfig } from '../configs/validationConfigs';
+import { signInStyles } from './styles';
 
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  fieldItem: {
-    width: '100%',
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-}));
+const useStyles = signInStyles();
 
 export default function SignIn() {
   const classes = useStyles();
 
   const language = useSelector(({ systemReducer }) => systemReducer.language);
-  const [email, password, fieldValues, changeHandler, startValidation] = useValidation(signInConfig);
+  const [email, password, fieldValues, changeHandler, startValidation] = useValidation(signInConfig(language), language);
 
   const signIn = (config, error) => {
     console.log(config, error);
@@ -90,7 +73,7 @@ export default function SignIn() {
               />
             </Grid>
             <Grid item>
-              <Link to={`${languages[language].links}/sign-up`}>
+              <Link to={`${languages[language].link}/sign-up`}>
                 {languages[language]['sign-in'].linkTitle}
               </Link>
             </Grid>

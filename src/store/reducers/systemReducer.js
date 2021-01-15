@@ -1,7 +1,7 @@
 import { SET_LANGAUGE } from '../actionTypes';
 
 const initialState = {
-  language: null,
+  language: 'en',
 };
 
 export default (state = initialState, { type, payload }) => {

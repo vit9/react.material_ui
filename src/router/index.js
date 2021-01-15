@@ -11,19 +11,14 @@ export default function Router() {
   const location = useLocation();
   const dispatch = useDispatch();
   const lang = location.pathname.split('/')[1];
-  const [language, setLanguage] = useState(null);
   const [config, setConfig] = useState(() => (lang === '' ? routerConfig : supportedLanguages.includes(lang) ? routerConfig.map((el) => ({ ...el, path: `/${lang}${el.path}` })) : routerConfig));
   useEffect(() => {
     Axios.setConfiguration();
   }, []);
 
   useEffect(() => {
-    const lang = location.pathname.split('/')[1];
-    if (language !== null) {
-      setConfig((prevcofig) => prevcofig.map((c) => ({ ...c, path: `${language}/${c.path.substring(lang.length === 2 ? 1 : 4)}` })));
-    }
-    dispatch(languageAction(language || lang.length === 2 ? lang : 'en'));
-  }, [language]);
+    dispatch(languageAction(lang.length === 2 ? lang : 'en'));
+  }, [config]);
 
   return (
     <Fragment>
@@ -42,7 +37,7 @@ export default function Router() {
                     key={id}
                     token={localStorage.accessToken}
                     renderWithoutVerify={renderWithoutVerify}
-                    setLanguage={setLanguage}
+                    setLanguage={setConfig}
                   />)
             }
             <Route component = {() => <div>404</div>} />

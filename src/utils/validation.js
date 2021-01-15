@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import { useState } from 'react';
 
-export default function useValidation(params) {
+export default function useValidation(params, dependence) {
   // const [isRender, setIsRender] = useState(isReactivityValdiation);
   const defaultState = { ...params };
   const [value, setValue] = useState(params);
@@ -101,6 +101,7 @@ export default function useValidation(params) {
     });
     return { errorFields, error };
   }
+
   return (
     [...validationResponse.validation, value, onChangeHandler, startValidation, getDefafultConfig]
   );
