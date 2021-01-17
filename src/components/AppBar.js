@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
+import clsx from 'clsx';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -9,22 +10,30 @@ import Menu from '@material-ui/core/Menu';
 import MenuIcon from '@material-ui/icons/Menu';
 import GTranslate from '@material-ui/icons/GTranslate';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import { appBarStyles } from './styles';
+import AccountCircle from '@material-ui/icons/AccountCircle';
 
-import { languagesList, supportedLanguages } from '../languages';
+import { useSelector } from 'react-redux';
+import Drawer from './Drawer';
+import { appBarStyles } from './styles';
+import { languagesList, supportedLanguages, languages } from '../languages';
 
 const useStyles = appBarStyles();
 
 export default function PrimarySearchAppBar(props) {
-  const { setLanguage } = props;
+  const { setLanguage, isDrawer } = props;
   const classes = useStyles();
   const history = useHistory();
   const location = useLocation();
+  const language = useSelector(({ systemReducer }) => systemReducer.language);
 
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorEl, setAnchorEl] = useState({
+    profileAnchor: false,
+    languageAnchor: false,
+  });
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
+  const [open, setOpen] = useState(false);
 
-  const isMenuOpen = Boolean(anchorEl);
+  const isMenuOpen = anchorEl;
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const chooseLanguage = (lang) => {
@@ -42,16 +51,24 @@ export default function PrimarySearchAppBar(props) {
     }));
   };
 
-  const handleProfileMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
+
+  const handleMenuOpen = (event, name) => {
+    setAnchorEl({ ...anchorEl, [name]: event.currentTarget });
   };
 
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
   };
 
-  const handleMenuClose = () => {
-    setAnchorEl(null);
+  const handleMenuClose = (name) => {
+    setAnchorEl({ ...anchorEl, [name]: false });
     handleMobileMenuClose();
   };
 
@@ -61,15 +78,37 @@ export default function PrimarySearchAppBar(props) {
 
   const renderMenu = (
     <Menu
-      anchorEl={anchorEl}
+      anchorEl={anchorEl.languageAnchor}
       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
       id='primary-search-account-menu'
       keepMounted
       transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
+      open={isMenuOpen.languageAnchor}
+      onClose={() => handleMenuClose('languageAnchor')}
     >
         {languagesList.map(({ name, language }, key) => <MenuItem key={key} onClick={() => chooseLanguage(language)}>{name}</MenuItem>)}
+    </Menu>
+  );
+
+  const renderProfileMenu = (
+    <Menu
+      anchorEl={anchorEl.profileAnchor}
+      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      id='primary-search-account-menu'
+      keepMounted
+      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      open={isMenuOpen.profileAnchor}
+      onClose={() => handleMenuClose('profileAnchor')}
+    >
+        <MenuItem>
+          <Link to={`${languages[language].link}/profile`}>{languages[language]['app-bar'].account}</Link>
+        </MenuItem>
+        <MenuItem>
+           <Link to={`${languages[language].link}/orders`}>{languages[language]['app-bar'].myGoods}</Link>
+        </MenuItem>
+        <MenuItem>
+           <Link to={`${languages[language].link}/wish-list`}>{languages[language]['app-bar'].wishList}</Link>
+        </MenuItem>
     </Menu>
   );
 
@@ -84,7 +123,7 @@ export default function PrimarySearchAppBar(props) {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem onClick={handleProfileMenuOpen}>
+      <MenuItem onClick={(event) => handleMenuOpen(event, 'languageAnchor')}>
         <IconButton
           aria-label="account of current user"
           aria-controls="primary-search-account-menu"
@@ -99,17 +138,25 @@ export default function PrimarySearchAppBar(props) {
   );
 
   return (
-    <div className={classes.grow}>
-      <AppBar position="static">
+    <div className={clsx(classes.root, { [classes.grow]: true })}>
+      <AppBar
+        position="fixed"
+        className={clsx(classes.appBar, {
+          [classes.appBarShift]: open,
+        })}
+      >
         <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
+       {isDrawer && <IconButton
             color="inherit"
             aria-label="open drawer"
+            onClick={handleDrawerOpen}
+            edge="start"
+            className={clsx(classes.menuButton, {
+              [classes.hide]: open,
+            })}
           >
             <MenuIcon />
-          </IconButton>
+          </IconButton>}
           <Typography className={classes.title} variant="h6" noWrap>
             React.Material-UI by vit9
           </Typography>
@@ -120,14 +167,20 @@ export default function PrimarySearchAppBar(props) {
               aria-label="account of current user"
               aria-controls='primary-search-account-menu'
               aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
+              onClick={(event) => handleMenuOpen(event, 'languageAnchor')}
               color="inherit"
             >
               <GTranslate />
             </IconButton>
-            <Typography className={classes.language} variant="h6" noWrap>
-                  {/* {languagesList.find((el) => el.routeName === (lang === '' ? lang : `/${lang}`)).name} */}
-            </Typography>
+            {isDrawer && <IconButton
+              edge="end"
+              aria-label="account of current user"
+              aria-haspopup="true"
+              onClick={(event) => handleMenuOpen(event, 'profileAnchor')}
+              color="inherit"
+            >
+              <AccountCircle />
+            </IconButton>}
           </div>
           <div className={classes.sectionMobile}>
             <IconButton
@@ -142,9 +195,14 @@ export default function PrimarySearchAppBar(props) {
           </div>
         </Toolbar>
       </AppBar>
+      {isDrawer && <Drawer open={open} handleDrawerClose={handleDrawerClose}/>}
       {renderMobileMenu}
       {renderMenu}
-      {props.children}
+      {renderProfileMenu}
+      <main className={classes.content}>
+        <div className={classes.toolbar} />
+        {props.children}
+      </main>
     </div>
   );
 }

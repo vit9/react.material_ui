@@ -1,5 +1,8 @@
 import SignInPage from '../../pages/signIn';
 import SignUpPage from '../../pages/signUp';
+import ProfilePage from '../../pages/profile';
+import OrdersPage from '../../pages/orders';
+import WishList from '../../pages/wishList';
 
 export const routerConfig = [
   {
@@ -8,7 +11,6 @@ export const routerConfig = [
     path: '/sign-in',
     roles: [],
     isPrivate: false,
-    renderWithoutVerify: false,
 
   },
   {
@@ -17,11 +19,34 @@ export const routerConfig = [
     path: '/sign-up',
     roles: [],
     isPrivate: false,
-    renderWithoutVerify: false,
 
   },
   {
     id: 3,
+    Component: ProfilePage,
+    path: '/profile',
+    roles: [],
+    isPrivate: false,
+
+  },
+  {
+    id: 4,
+    Component: OrdersPage,
+    path: '/orders',
+    roles: [],
+    isPrivate: false,
+
+  },
+  {
+    id: 5,
+    Component: WishList,
+    path: '/wish-list',
+    roles: [],
+    isPrivate: false,
+
+  },
+  {
+    id: 6,
     Component: () => <div>root</div>,
     path: '/',
     roles: [],

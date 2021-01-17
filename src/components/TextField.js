@@ -6,7 +6,7 @@ import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
 export default function CInput({
-  type, value, label, variant, required, name, multiline, rows, error, errorText, changeHandler,
+  type, value, label, variant, required, name, multiline, rows, error, errorText, changeHandler, fullwidth,
 }) {
   const [showIcon, setShowIcon] = useState(false);
   const handleClickShowIcon = () => {
@@ -21,7 +21,7 @@ export default function CInput({
     <>
     {
         type === 'adornments'
-          ? <FormControl variant={variant} required={required} fullWidth>
+          ? <FormControl variant={variant} required={required} fullWidth={fullwidth}>
                 <InputLabel error={error}>{label}</InputLabel>
                 <OutlinedInput
                     type={showIcon ? 'text' : 'password'}
@@ -46,7 +46,7 @@ export default function CInput({
                 <FormHelperText error={error}>{errorText}</FormHelperText>
             </FormControl>
           : <TextField
-                fullWidth
+                fullWidth={fullwidth}
                 variant={variant}
                 required={required}
                 name={name}

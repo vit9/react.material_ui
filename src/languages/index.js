@@ -16,6 +16,11 @@ export const supportedLanguages = [
 export const languages = {
   ru: {
     link: '/ru',
+    'app-bar': {
+      account: 'Мой аккаунт',
+      myGoods: 'Мои заказы',
+      wishList: 'Список желаний',
+    },
     'sign-in': {
       title: 'Вход',
       email: 'e-mail',
@@ -31,9 +36,23 @@ export const languages = {
       buttonTitle: 'Регистрация',
       linkTitle: 'Уже зарегистрировались',
     },
+    profile: {
+      surname: 'Фамилия',
+      name: 'Имя',
+      patronymic: 'Отчество',
+      birth: 'Дата рождения',
+      sex: 'Пол',
+      email: 'Имейл',
+      phone: 'Моб. телефон',
+    },
   },
   en: {
     link: '',
+    'app-bar': {
+      account: 'My account',
+      myGoods: 'My orders',
+      wishList: 'Wish list',
+    },
     'sign-in': {
       title: 'Sign in',
       email: 'email',
@@ -48,6 +67,15 @@ export const languages = {
       confirmPassword: 'confirm password',
       buttonTitle: 'Sign up',
       linkTitle: 'Already have an account? Sign in',
+    },
+    profile: {
+      surname: 'Surname',
+      name: 'Name',
+      patronymic: 'Patronymic',
+      birth: 'Birthday',
+      sex: 'Sex',
+      email: 'E-mail',
+      phone: 'Mobile Phone',
     },
   },
 };

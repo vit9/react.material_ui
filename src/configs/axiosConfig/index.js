@@ -1,11 +1,6 @@
 /* eslint-disable no-async-promise-executor */
-/* eslint-disable @typescript-eslint/restrict-template-expressions */
-/* eslint-disable no-param-reassign */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable no-underscore-dangle */
-/* eslint-disable @typescript-eslint/no-misused-promises */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
+
 import axios from 'axios';
 
 let isRefreshing = false;
