@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Grid, Typography, Paper } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 import { orderStyles } from './styles';
 import HighlightedText from './HighLigthedText';
 import { order_status } from '../constants';
@@ -8,7 +8,7 @@ import { order_status } from '../constants';
 const useStyles = orderStyles();
 
 export default function Order({
-  name, price, date, status, setModal,
+  name, price, date, status, description, uri, setModal,
 }) {
   const classes = useStyles();
 
@@ -19,12 +19,13 @@ export default function Order({
       price,
       date,
       status,
+      description,
+      uri,
     });
   };
 
   return (
         <Grid item xs={12} className={classes.root}>
-            {/* <Paper elevation={3} className={classes.paper}> */}
             <div className='order_container' onClick={transferDataHandler}>
                 <Typography component='p' className={classes.typography}>
                     {name}
@@ -42,7 +43,6 @@ export default function Order({
                     />
                 </Typography>
             </div>
-            {/* </Paper> */}
         </Grid>
   );
 }

@@ -7,6 +7,8 @@ import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import useValidation from '../utils/validation';
 
 import { signInAction } from '../store/actions';
@@ -73,6 +75,7 @@ export default function SignIn() {
                   errorText={password.errors}
                   value={fieldValues.password.value || ''}
                   changeHandler={changeHandler}
+                  iconsType={{ itype: 'password', show: false }}
               />
             </Grid>
             <Grid item className={classes.fieldItem}>

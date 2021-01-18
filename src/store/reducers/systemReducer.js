@@ -1,4 +1,4 @@
-import { SET_LANGAUGE, ALERT } from '../actionTypes';
+import { SET_LANGAUGE, ALERT, SEARCH_STROKE } from '../actionTypes';
 
 const initialState = {
   language: 'en',
@@ -7,6 +7,7 @@ const initialState = {
     severity: '',
     message: '',
   },
+  searchStroke: false,
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -26,6 +27,12 @@ export default (state = initialState, { type, payload }) => {
           severity: payload.severity,
           message: payload.message,
         },
+      };
+    }
+    case SEARCH_STROKE: {
+      return {
+        ...state,
+        searchStroke: payload,
       };
     }
     default: return state;

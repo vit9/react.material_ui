@@ -1,5 +1,6 @@
 export const SET_LANGAUGE = '[SYSTEM] SET LANGUAGE';
 export const ALERT = '[SYSTEM] ALERT';
+export const SEARCH_STROKE = '[SYSTEM] SEARCH STROKE';
 
 export const SIGN_IN_SUCCESS = '[AUTH] SIGN IN SUCCESS';
 export const SIGN_IN_FAIL = '[AUTH] SIGN IN FAIL';

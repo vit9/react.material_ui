@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import clsx from 'clsx';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -12,20 +13,23 @@ import GTranslate from '@material-ui/icons/GTranslate';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 
-import { useSelector } from 'react-redux';
 import Drawer from './Drawer';
 import Alert from './SnackBar';
 import { appBarStyles } from './styles';
+import { searchStrokeAction } from '../store/actions';
 import { languagesList, supportedLanguages, languages } from '../languages';
+import SearchStroke from './SearchStroke';
 
 const useStyles = appBarStyles();
 
-export default function PrimarySearchAppBar(props) {
-  const { setLanguage, isDrawer } = props;
+export default function PrimarySearchAppBar({ children, setLanguage, isDrawer }) {
+  const ref = useRef();
   const classes = useStyles();
   const history = useHistory();
   const location = useLocation();
+  const dispatch = useDispatch();
   const language = useSelector(({ systemReducer }) => systemReducer.language);
+  const isSearchStrokeOpen = useSelector(({ systemReducer }) => systemReducer.searchStroke);
 
   const [anchorEl, setAnchorEl] = useState({
     profileAnchor: false,
@@ -76,6 +80,23 @@ export default function PrimarySearchAppBar(props) {
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
+
+  useEffect(() => {
+    if (!isDrawer) return;
+    document.addEventListener('keydown', (event) => {
+      if (event.code === 'KeyS' && (event.altKey || event.metaKey)) {
+        dispatch(searchStrokeAction(true));
+      }
+    });
+    return () => {
+      dispatch(searchStrokeAction(false));
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isDrawer) return;
+    ref?.current?.focus();
+  }, [isSearchStrokeOpen]);
 
   const renderMenu = (
     <Menu
@@ -140,6 +161,7 @@ export default function PrimarySearchAppBar(props) {
 
   return (
     <div className={clsx(classes.root, { [classes.grow]: true })}>
+      <SearchStroke searchRef={ref}/>
       <Alert/>
       <AppBar
         position="fixed"
@@ -203,7 +225,7 @@ export default function PrimarySearchAppBar(props) {
       {renderProfileMenu}
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        {props.children}
+        {children}
       </main>
     </div>
   );

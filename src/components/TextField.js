@@ -4,11 +4,23 @@ import {
 } from '@material-ui/core';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import SearchIcon from '@material-ui/icons/Search';
+
+const icons = {
+  password: {
+    Icon1: () => <Visibility/>,
+    Icon2: () => <VisibilityOff/>,
+  },
+  search: {
+    Icon1: () => <SearchIcon/>,
+  },
+};
 
 export default function CInput({
-  type, value, label, variant, required, name, multiline, rows, error, errorText, changeHandler, fullwidth,
+  type, value, label, variant, required, name, multiline, rows, error, errorText, changeHandler, fullwidth, iconsType, handleClick,
 }) {
-  const [showIcon, setShowIcon] = useState(false);
+  const [showIcon, setShowIcon] = useState(false || iconsType?.show);
+
   const handleClickShowIcon = () => {
     setShowIcon(!showIcon);
   };
@@ -33,11 +45,11 @@ export default function CInput({
                         <InputAdornment position="end">
                         <IconButton
                             aria-label="toggle password visibility"
-                            onClick={handleClickShowIcon}
+                            onClick={handleClick || handleClickShowIcon}
                             onMouseDown={handleMouseDownIcon}
                             edge="end"
                         >
-                            {showIcon ? <Visibility /> : <VisibilityOff />}
+                            {showIcon ? icons[iconsType?.itype]?.Icon1() : icons[iconsType?.itype]?.Icon2()}
                         </IconButton>
                         </InputAdornment>
                     }

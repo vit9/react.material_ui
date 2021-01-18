@@ -8,7 +8,7 @@ import GoodCard from '../../components/GoodCard';
 export const routerConfig = [
   {
     id: 1,
-    Component: GoodCard,
+    Component: SignInPage,
     path: '/sign-in',
     roles: [],
     isPrivate: false,
