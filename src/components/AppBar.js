@@ -14,6 +14,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 
 import { useSelector } from 'react-redux';
 import Drawer from './Drawer';
+import Alert from './SnackBar';
 import { appBarStyles } from './styles';
 import { languagesList, supportedLanguages, languages } from '../languages';
 
@@ -139,6 +140,7 @@ export default function PrimarySearchAppBar(props) {
 
   return (
     <div className={clsx(classes.root, { [classes.grow]: true })}>
+      <Alert/>
       <AppBar
         position="fixed"
         className={clsx(classes.appBar, {

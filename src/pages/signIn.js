@@ -1,6 +1,6 @@
-import React, { useMemo } from 'react';
-import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Link, useHistory } from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
@@ -9,6 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import useValidation from '../utils/validation';
 
+import { signInAction } from '../store/actions';
 import CInput from '../components/TextField';
 import CButton from '../components/Button';
 import { languages } from '../languages';
@@ -19,13 +20,21 @@ const useStyles = signInStyles();
 
 export default function SignIn() {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const history = useHistory();
 
   const language = useSelector(({ systemReducer }) => systemReducer.language);
+  const signInResultFail = useSelector(({ authReducer }) => authReducer['sign-in']);
   const [email, password, fieldValues, changeHandler, startValidation] = useValidation(signInConfig(language), language);
 
-  const signIn = (config, error) => {
-    console.log(config, error);
+  const signIn = ([email, password], error) => {
+    dispatch(signInAction(error, { email: email.value, password: password.value }));
   };
+
+  useEffect(() => {
+    if (signInResultFail.error || !signInResultFail.success) return;
+    history.push(`/${languages[language].link}`);
+  }, [signInResultFail]);
 
   return (
       <Container component="main" maxWidth="xs">
@@ -43,6 +52,7 @@ export default function SignIn() {
                     type='email'
                     variant="outlined"
                     required={true}
+                    fullwidth={true}
                     label={languages[language]['sign-in'].email}
                     name='email'
                     error={!!email.errors}
@@ -56,6 +66,7 @@ export default function SignIn() {
                   type='adornments'
                   variant="outlined"
                   required={true}
+                  fullwidth={true}
                   label={languages[language]['sign-in'].password}
                   name='password'
                   error={!!password.errors}

@@ -1,7 +1,12 @@
-import { SET_LANGAUGE } from '../actionTypes';
+import { SET_LANGAUGE, ALERT } from '../actionTypes';
 
 const initialState = {
   language: 'en',
+  alert: {
+    open: false,
+    severity: '',
+    message: '',
+  },
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -10,6 +15,17 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         language: payload,
+      };
+    }
+    case ALERT: {
+      return {
+        ...state,
+        alert: {
+          ...state.alert,
+          open: payload.open,
+          severity: payload.severity,
+          message: payload.message,
+        },
       };
     }
     default: return state;

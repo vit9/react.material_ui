@@ -3,11 +3,12 @@ import SignUpPage from '../../pages/signUp';
 import ProfilePage from '../../pages/profile';
 import OrdersPage from '../../pages/orders';
 import WishList from '../../pages/wishList';
+import GoodCard from '../../components/GoodCard';
 
 export const routerConfig = [
   {
     id: 1,
-    Component: SignInPage,
+    Component: GoodCard,
     path: '/sign-in',
     roles: [],
     isPrivate: false,

@@ -30,7 +30,7 @@ export default function useValidation(params, dependence) {
   }
 
   function maxLengthValidation(field) {
-    if (field?.maxLength < field?.value) {
+    if (field?.maxLength < field?.value?.length) {
       field = { ...field, errors: `${field.errors.maxLength} ${field.value}` };
       return field;
     }
@@ -39,7 +39,7 @@ export default function useValidation(params, dependence) {
   }
 
   function minLengthValidation(field) {
-    if (field?.minLength > field?.value) {
+    if (field?.minLength > field?.value?.length) {
       field = { ...field, errors: `${field?.errors?.minLength} ${field?.value}` };
       return field;
     }

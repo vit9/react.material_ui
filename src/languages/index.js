@@ -26,7 +26,7 @@ export const languages = {
       email: 'e-mail',
       password: 'пароль',
       buttonTitle: 'Вход',
-      linkTitle: 'Еще нет аккаунта?',
+      linkTitle: 'Еще нет аккаунта? Зарегестрировались',
     },
     'sign-up': {
       title: 'Регистрация',
@@ -34,7 +34,7 @@ export const languages = {
       password: 'Пароль',
       confirmPassword: 'Подтвердите пароль',
       buttonTitle: 'Регистрация',
-      linkTitle: 'Уже зарегистрировались',
+      linkTitle: 'Уже зарегистрировались? Войдите',
     },
     profile: {
       surname: 'Фамилия',
