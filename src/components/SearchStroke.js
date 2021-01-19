@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { searchStrokeAction } from '../store/actions';
 import CInput from './TextField';
@@ -14,9 +14,10 @@ const mockData = [
   'dfdf',
 ];
 
-export default function SearchStroke({ searchRef }) {
+export default function SearchStroke({ searchRef, strokeRef }) {
   const dispatch = useDispatch();
   const [op, setOp] = useState({});
+  const [data, setData] = useState([]);
   const isOpen = useSelector(({ systemReducer }) => systemReducer.searchStroke);
 
   const blurHandler = (event) => {
@@ -28,6 +29,10 @@ export default function SearchStroke({ searchRef }) {
     console.log(123);
   };
 
+  const changeHandler = (event) => {
+    setData(mockData.filter((el) => el.slice(0, event.target.value.length).toLowerCase() === event.target.value.toLowerCase() && event.target.value));
+  };
+
   return (
         <div className={`${isOpen ? 'searchStroke_container searchStroke_container-open' : 'searchStroke_container'}`} tabIndex={1} onBlur={blurHandler} ref={searchRef}>
             <div className='searchStroke_wrapper'>
@@ -37,12 +42,14 @@ export default function SearchStroke({ searchRef }) {
                     fullwidth={true}
                     type={'adornments'}
                     iconsType={{ itype: 'search', show: true }}
+                    refCurrent={strokeRef}
                     handleClick={handleClick}
+                    changeHandler={changeHandler}
                 />
             </div>
-            <div className='searchStroke_content'>
+            {!!data.length && <div className='searchStroke_content'>
                 <div className='searchStroke_content-wrapper'>
-                    {mockData.map((text) => (
+                    {data.map((text) => (
                         <div
                             className='searchStroke_content-result'
                             onMouseOver={() => setOp({ ...op, [text]: 'opacity' })}
@@ -55,7 +62,7 @@ export default function SearchStroke({ searchRef }) {
                         </div>
                     ))}
                 </div>
-            </div>
+            </div>}
         </div>
   );
 }

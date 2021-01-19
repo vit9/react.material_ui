@@ -17,7 +17,7 @@ const icons = {
 };
 
 export default function CInput({
-  type, value, label, variant, required, name, multiline, rows, error, errorText, changeHandler, fullwidth, iconsType, handleClick,
+  type, value, label, variant, required, name, refCurrent, multiline, rows, error, errorText, changeHandler, fullwidth, iconsType, handleClick,
 }) {
   const [showIcon, setShowIcon] = useState(false || iconsType?.show);
 
@@ -41,6 +41,7 @@ export default function CInput({
                     onChange={changeHandler}
                     name={name}
                     error={error}
+                    inputRef={refCurrent}
                     endAdornment={
                         <InputAdornment position="end">
                         <IconButton

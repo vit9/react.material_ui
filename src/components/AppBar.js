@@ -24,6 +24,7 @@ const useStyles = appBarStyles();
 
 export default function PrimarySearchAppBar({ children, setLanguage, isDrawer }) {
   const ref = useRef();
+  const strokeRef = useRef();
   const classes = useStyles();
   const history = useHistory();
   const location = useLocation();
@@ -96,6 +97,7 @@ export default function PrimarySearchAppBar({ children, setLanguage, isDrawer })
   useEffect(() => {
     if (!isDrawer) return;
     ref?.current?.focus();
+    strokeRef?.current?.focus();
   }, [isSearchStrokeOpen]);
 
   const renderMenu = (
@@ -161,7 +163,7 @@ export default function PrimarySearchAppBar({ children, setLanguage, isDrawer })
 
   return (
     <div className={clsx(classes.root, { [classes.grow]: true })}>
-      <SearchStroke searchRef={ref}/>
+      <SearchStroke searchRef={ref} strokeRef={strokeRef}/>
       <Alert/>
       <AppBar
         position="fixed"
